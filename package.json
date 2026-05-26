@@ -12,7 +12,15 @@
     "test:watch": "cross-env NODE_ENV=test node --experimental-vm-modules node_modules/jest/bin/jest.js --watchAll --forceExit --detectOpenHandles",
     "seed": "node src/scripts/seed.js"
   },
-  "keywords": ["ecommerce", "mern", "express", "mongodb"],
+  "keywords": [
+    "ecommerce",
+    "mern",
+    "express",
+    "mongodb"
+  ],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^17.4.2"
+  }
 }
