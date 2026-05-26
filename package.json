@@ -1,0 +1,18 @@
+{
+  "name": "ecommerce-backend",
+  "version": "1.0.0",
+  "description": "E-Commerce MERN Stack Backend — Myntra + Amazon Style",
+  "main": "src/server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "test": "cross-env NODE_ENV=test node --experimental-vm-modules node_modules/jest/bin/jest.js --forceExit --detectOpenHandles",
+    "test:coverage": "cross-env NODE_ENV=test node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage --forceExit --detectOpenHandles",
+    "test:watch": "cross-env NODE_ENV=test node --experimental-vm-modules node_modules/jest/bin/jest.js --watchAll --forceExit --detectOpenHandles",
+    "seed": "node src/scripts/seed.js"
+  },
+  "keywords": ["ecommerce", "mern", "express", "mongodb"],
+  "author": "",
+  "license": "ISC"
+}
