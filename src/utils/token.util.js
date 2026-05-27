@@ -50,7 +50,7 @@ const setRefreshTokenCookie = (res, token) => {
   res.cookie('refreshToken', token, {
     httpOnly: true,
     secure: isProduction,
-    sameSite: isProduction ? 'strict' : 'lax',
+    sameSite: isProduction ? 'none' : 'lax',
     maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days in ms
     path: '/',
   });
@@ -60,10 +60,12 @@ const setRefreshTokenCookie = (res, token) => {
  * Clear the refresh token cookie on logout.
  */
 const clearRefreshTokenCookie = (res) => {
+  const isProduction = appConfig.nodeEnv === 'production';
+
   res.cookie('refreshToken', '', {
     httpOnly: true,
-    secure: appConfig.nodeEnv === 'production',
-    sameSite: appConfig.nodeEnv === 'production' ? 'strict' : 'lax',
+    secure: isProduction,
+    sameSite: isProduction ? 'none' : 'lax',
     maxAge: 0,
     path: '/',
   });

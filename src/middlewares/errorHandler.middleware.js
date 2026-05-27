@@ -9,9 +9,7 @@ export const errorHandler = (err, req, res, next) => {
   let message = err.message || 'Internal Server Error';
   let errors = err.errors || [];
 
-  if (appConfig.nodeEnv !== 'production') {
-    console.error('Error handled:', err);
-  }
+  console.error('Error handled:', err);
 
   // Mongoose duplicate key error (e.g. email already exists)
   if (err.code === 11000) {

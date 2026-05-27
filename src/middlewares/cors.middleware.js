@@ -6,16 +6,26 @@ const corsOptions = {
     // Allow requests with no origin (like mobile apps, curl, postman)
     if (!origin) return callback(null, true);
 
+    const cleanOrigin = origin.replace(/\/$/, '');
+    const cleanFrontendUrl = appConfig.frontendUrl ? appConfig.frontendUrl.replace(/\/$/, '') : '';
+
     const allowedOrigins = [
-      appConfig.frontendUrl,
+      cleanFrontendUrl,
       'http://localhost:5173', // Local Vite development default
       'http://localhost:3000', // React CRA default
+      'http://localhost:5174',
+      'http://localhost:5175',
+      'http://127.0.0.1:5173',
+      'http://127.0.0.1:3000',
     ];
 
-    if (allowedOrigins.indexOf(origin) !== -1 || appConfig.nodeEnv === 'development') {
+    const isAllowed = allowedOrigins.includes(cleanOrigin) || appConfig.nodeEnv === 'development';
+
+    if (isAllowed) {
       callback(null, true);
     } else {
-      callback(new Error('Not allowed by CORS'));
+      console.error(`[CORS Block] Request origin "${origin}" is not allowed. Configured FRONTEND_URL: "${appConfig.frontendUrl}". Cleaned allowed list:`, allowedOrigins);
+      callback(new Error(`Not allowed by CORS: Origin "${origin}" does not match configured FRONTEND_URL.`));
     }
   },
   credentials: true,

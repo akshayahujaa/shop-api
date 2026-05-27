@@ -1,6 +1,7 @@
 import express from 'express';
 import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
+import mongoose from 'mongoose';
 import { corsMiddleware } from './middlewares/cors.middleware.js';
 import { httpLogger } from './middlewares/logger.middleware.js';
 import { authRateLimiter, apiRateLimiter } from './middlewares/rateLimiter.middleware.js';
@@ -9,6 +10,19 @@ import routes from './routes/index.js';
 import appConfig from './config/app.config.js';
 
 const app = express();
+
+app.set('trust proxy', 1);
+
+// Health check endpoint (placed before security/cors to ensure it is always accessible)
+app.get('/health', (req, res) => {
+  res.status(200).json({
+    status: 'healthy',
+    timestamp: new Date(),
+    uptime: process.uptime(),
+    env: appConfig.nodeEnv,
+    database: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected',
+  });
+});
 
 // 1. Security & CORS
 app.use(corsMiddleware);
