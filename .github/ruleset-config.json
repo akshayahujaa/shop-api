@@ -21,7 +21,8 @@
       "statusCheckSecrets": [
         "OPENROUTER_API_KEY"
       ]
-    }
+    },
+    "test": {}
   },
   "environmentProfiles": {
     "test": {},
