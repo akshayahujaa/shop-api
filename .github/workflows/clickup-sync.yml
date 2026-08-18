@@ -3,6 +3,7 @@
 #
 # Pipeline (a merge only ever moves a task forwards):
 #   dev → in progress
+#   test → QA
 name: ClickUp task sync
 
 on:
@@ -10,6 +11,7 @@ on:
     types: [closed]
     branches:
       - 'dev'
+      - 'test'
   # Manual test entry: simulates a merged branch without needing a real PR,
   # so the wiring (secret, id extraction, ClickUp auth) can be verified alone.
   workflow_dispatch:
@@ -19,7 +21,7 @@ on:
         required: true
         type: string
       base_ref:
-        description: 'Environment merged into (dev)'
+        description: 'Environment merged into (dev, test)'
         required: false
         default: 'dev'
         type: string
@@ -52,6 +54,7 @@ jobs:
           want=""; want_rank=0
           case "$BASE_REF" in
             'dev') want='in progress'; want_rank=1 ;;
+            'test') want='QA'; want_rank=2 ;;
             *) echo "::warning::'$BASE_REF' is not a pipeline environment; nothing to sync."; exit 0 ;;
           esac
 
@@ -91,6 +94,7 @@ jobs:
           case "$lower" in
             'to do'|'todo'|'open'|'backlog'|'pending') rank=0 ;;
             'in progress') rank=1 ;;
+            'qa') rank=2 ;;
             *) rank=-1 ;;
           esac
 
