@@ -1,0 +1,98 @@
+{
+  "baseline": {
+    "rulesetName": "Pull Request Compulsion",
+    "includeDefaultBranch": true,
+    "requirePullRequest": true,
+    "requiredApprovals": 0,
+    "preventDeletion": true,
+    "preventForcePush": true,
+    "allowedMergeMethods": [
+      "merge",
+      "squash",
+      "rebase"
+    ]
+  },
+  "environments": {
+    "dev": {
+      "statusChecks": [
+        "scope-check"
+      ],
+      "statusCheckRuleset": "PR-SCOPE-CHECK",
+      "statusCheckSecrets": [
+        "OPENROUTER_API_KEY"
+      ]
+    }
+  },
+  "environmentProfiles": {
+    "test": {},
+    "prod": {
+      "requiredApprovals": 1,
+      "reviewerTeams": [
+        "tehvault/reviewers"
+      ],
+      "reviewerRuleset": "team-only-reviewer"
+    }
+  },
+  "teamSeeding": {
+    "fromCodeowners": true,
+    "includeRunner": "fallback",
+    "populateEmptyTeams": true
+  },
+  "taskSync": {
+    "enabled": true,
+    "provider": "clickup",
+    "todoStatuses": [
+      "to do",
+      "todo",
+      "open",
+      "backlog",
+      "pending"
+    ],
+    "environmentStatuses": {
+      "dev": "in progress",
+      "test": "QA",
+      "prod": "done"
+    }
+  },
+  "prChecks": {
+    "scopeCheck": {
+      "enabled": true,
+      "aiProvider": "openrouter",
+      "aiModel": "qwen/qwen3-coder",
+      "aiKeySecret": "OPENROUTER_API_KEY",
+      "requireTask": true,
+      "failOpenOnError": false,
+      "maxDiffChars": 60000,
+      "autoCloseOutOfScope": true
+    },
+    "prAgent": {
+      "enabled": true,
+      "model": "openrouter/qwen/qwen3-coder",
+      "fallbackModels": [
+        "openrouter/qwen/qwen-2.5-72b-instruct"
+      ],
+      "maxTokens": 32000,
+      "numCodeSuggestions": 4,
+      "keySecret": "OPENROUTER_API_KEY",
+      "securityGate": true
+    }
+  },
+  "branchNaming": {
+    "rulesetName": "Enforce Branch Nomenclature",
+    "allowedPrefixes": [
+      "feature",
+      "bugfix",
+      "hotfix",
+      "docs",
+      "chore"
+    ],
+    "requireTaskId": true,
+    "taskIdPrefix": "CU-",
+    "restrictCreation": true,
+    "preventForcePush": true,
+    "requiredApprovals": 1,
+    "reviewerTeams": [
+      "tehvault/reviewers"
+    ]
+  }
+}
