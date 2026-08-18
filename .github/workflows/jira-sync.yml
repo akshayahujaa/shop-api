@@ -4,6 +4,7 @@
 # Pipeline (a merge only ever moves an issue forwards):
 #   dev → in progress
 #   test → QA
+#   prod → done
 name: Jira issue sync
 
 on:
@@ -12,6 +13,7 @@ on:
     branches:
       - 'dev'
       - 'test'
+      - 'prod'
   # Manual test entry: simulates a merged branch without needing a real PR,
   # so the wiring (variables, secret, key extraction, Jira auth) can be
   # verified alone.
@@ -22,7 +24,7 @@ on:
         required: true
         type: string
       base_ref:
-        description: 'Environment merged into (dev, test)'
+        description: 'Environment merged into (dev, test, prod)'
         required: false
         default: 'dev'
         type: string
@@ -57,6 +59,7 @@ jobs:
           case "$BASE_REF" in
             'dev') want='in progress'; want_rank=1 ;;
             'test') want='QA'; want_rank=2 ;;
+            'prod') want='done'; want_rank=3 ;;
             *) echo "::warning::'$BASE_REF' is not a pipeline environment; nothing to sync."; exit 0 ;;
           esac
 
@@ -94,6 +97,7 @@ jobs:
             'to do'|'todo'|'open'|'backlog'|'pending') rank=0 ;;
             'in progress') rank=1 ;;
             'qa') rank=2 ;;
+            'done') rank=3 ;;
             *) rank=-1 ;;
           esac
 
