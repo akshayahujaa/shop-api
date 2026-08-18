@@ -11,6 +11,7 @@ on:
     # declared in ruleset-config.json.
     branches:
       - 'dev'
+      - 'test'
     types: [opened, synchronize, reopened, edited]
 
 # Cancel an in-flight run when the PR is updated again
