@@ -12,6 +12,7 @@ on:
     branches:
       - 'dev'
       - 'test'
+      - 'prod'
     types: [opened, synchronize, reopened, edited]
 
 # Cancel an in-flight run when the PR is updated again
